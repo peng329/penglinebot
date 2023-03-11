@@ -18,25 +18,46 @@ from linebot.exceptions import (
 from linebot.models import *
 from nlp.olami import Olami
 
+import os
+import sys
 
 app = Flask(__name__)
-config = configparser.ConfigParser()
-config.read("config.ini")
+#config = configparser.ConfigParser()
+#config.read("config.ini")
 
-line_bot_api = LineBotApi(config['line_bot']['Channel_Access_Token'])
-handler = WebhookHandler(config['line_bot']['Channel_Secret'])
-client_id = config['imgur_api']['Client_ID']
-client_secret = config['imgur_api']['Client_Secret']
-album_id1 = config['imgur_api']['Album_ID1']
-album_id2 = config['imgur_api']['Album_ID2']
+#line_bot_api = LineBotApi(config['line_bot']['Channel_Access_Token'])
+#handler = WebhookHandler(config['line_bot']['Channel_Secret'])
+#client_id = config['imgur_api']['Client_ID']
+#client_secret = config['imgur_api']['Client_Secret']
+#album_id1 = config['imgur_api']['Album_ID1']
+#album_id2 = config['imgur_api']['Album_ID2']
 
 
-scope = ['https://spreadsheets.google.com/feeds',
+channel_secret = os.getenv('LINE_CHANNEL_SECRET',  None)
+channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN',  None)
+
+client_id = os.getenv('Client_ID',  None)
+client_secret = os.getenv('Client_Secret',  None)
+album_id1 = os.getenv('Album_ID1',  None)
+album_id2 = os.getenv('Album_ID2',  None)
+
+if channel_secret is None:
+    print('Specify LINE_CHANNEL_SECRET as environment variable.')
+    sys.exit(1)
+
+if channel_access_token is None:
+    print('Specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
+    sys.exit(1)
+
+line_bot_api = LineBotApi(channel_access_token)
+#parser = WebhookParser(channel_secret)
+handler = WebhookHandler(channel_secret)
+
+# 建立google試算表憑證，避免github洩漏，先註解
+#scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
-
-# 建立google試算表憑證
-cr = sac.from_json_keyfile_name('pengtest-4df4f9c3a055.json', scope) 
-gs = gspread.authorize(cr)
+#cr = sac.from_json_keyfile_name('pengtest-4df4f9c3a055.json', scope) 
+#gs = gspread.authorize(cr)
 
 
 
@@ -334,12 +355,13 @@ def handle_message(event):
     print("event.reply_token:", event.reply_token)
     print("event.message.text:", event.message.text)
 
-    sh = gs.open('LineBot') 
-    wks = sh.sheet1
-    dt = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+    #google sheet 底下先註解
+    #sh = gs.open('LineBot') 
+    #wks = sh.sheet1
+    #dt = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
 
-    google_excel = [user_profile.display_name,event.message.text,dt,user_id,user_profile.picture_url]
-    wks.insert_row(google_excel, 2)
+    #google_excel = [user_profile.display_name,event.message.text,dt,user_id,user_profile.picture_url]
+    #wks.insert_row(google_excel, 2)
 
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
