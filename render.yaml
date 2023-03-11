@@ -12,6 +12,18 @@ services:
     sync: false
   - key: LINE_CHANNEL_SECRET
     sync: false
+  - key: Client_ID
+    sync: false
+  - key: Client_Secret
+    sync: false
+  - key: Album_ID1
+    sync: false
+  - key: Album_ID2
+    sync: false
+  - key: APP_KEY
+    sync: false
+  - key: APP_SECRET
+    sync: false
 # - type: web
 #   name: line-bot-python-flask-with-handler
 #   env: python
