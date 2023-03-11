@@ -54,8 +54,7 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 # 建立google試算表憑證，避免github洩漏，先註解
-#scope = ['https://spreadsheets.google.com/feeds',
-         'https://www.googleapis.com/auth/drive']
+#scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 #cr = sac.from_json_keyfile_name('pengtest-4df4f9c3a055.json', scope) 
 #gs = gspread.authorize(cr)
 
