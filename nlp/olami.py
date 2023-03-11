@@ -5,6 +5,7 @@ import time
 from hashlib import md5
 
 import requests
+import os
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -19,7 +20,7 @@ class NliStatusError(Exception):
 class Olami:
     URL = 'https://tw.olami.ai/cloudservice/api'
 
-    def __init__(self, app_key=config['OLAMI']['APP_KEY'], app_secret=config['OLAMI']['APP_SECRET'], input_type=1):
+    def __init__(self, app_key=os.getenv('APP_KEY',  None), app_secret=os.getenv('APP_SECRET',  None), input_type=1):
         self.app_key = app_key
         self.app_secret = app_secret
         self.input_type = input_type
