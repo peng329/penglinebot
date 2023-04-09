@@ -63,7 +63,7 @@ handler = WebhookHandler(channel_secret)
 
 
 #/路徑，移除callback
-@app.route("/", methods=['POST'])
+@app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
@@ -74,7 +74,9 @@ def callback():
     app.logger.info("Request body: " + body)
     
     json_data = json.loads(body)
+    tk = json_data['events'][0]['replyToken']
     msg = json_data['events'][0]['message']['text']
+    print("msg:", msg)
     # handle webhook body
     try:
         handler.handle(body, signature)
@@ -96,7 +98,7 @@ def callback():
             content = response["choices"][0]["text"].replace('\n','')
             print("content:", content)
             line_bot_api.reply_message(
-                event.reply_token,
+                tk,
                 TextSendMessage(text=content))
         
     except InvalidSignatureError:
