@@ -365,21 +365,21 @@ def handle_message(event):
     #wks.insert_row(google_excel, 2)
     
     # 取出文字的前3個字元，轉換成小寫
-    ai_msg = event.message.text[:4].lower()
-    print("ai_msg[:4]", ai_msg)
-    print("event.message.text[4:]:", event.message.text[4:])
+    ai_msg = event.message.text[:3].lower()
     #供chatGpt使用
     if ai_msg == 'ai:':
         openai.api_key = chatGpt_api_key
         # 將第3個字元之後的訊息發送給 OpenAI
         response = openai.Completion.create(
             model='text-davinci-003',
-            prompt=event.message.text[4:],
+            prompt=event.message.text[3:],
             max_tokens=256,
             temperature=0.5,
             )
-        # 接收到回覆訊息後，移除換行符號	
+        # 接收到回覆訊息後，移除換行符號
+        print("response:", response)
         content = response["choices"][0]["text"].replace('\n','')
+        print("content:", content)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
