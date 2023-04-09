@@ -62,8 +62,8 @@ handler = WebhookHandler(channel_secret)
 #gs = gspread.authorize(cr)
 
 
-
-@app.route("/callback", methods=['POST'])
+#/路徑，移除callback
+@app.route("/", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
