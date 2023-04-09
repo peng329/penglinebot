@@ -70,7 +70,6 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    json_data = json.loads(body)
     # print("body:",body)
     app.logger.info("Request body: " + body)
 
@@ -367,6 +366,8 @@ def handle_message(event):
     #wks.insert_row(google_excel, 2)
     
     #chatGpt要用的prompt，格式是要json
+    body = request.get_data(as_text=True)
+    json_data = json.loads(body)
     msg = json_data['events'][0]['message']['text']
     print("msg:", msg)
     # 取出文字的前3個字元，轉換成小寫
