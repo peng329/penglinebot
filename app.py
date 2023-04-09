@@ -20,6 +20,7 @@ from nlp.olami import Olami
 
 import os
 import sys
+import openai
 
 app = Flask(__name__)
 #config = configparser.ConfigParser()
@@ -40,6 +41,7 @@ client_id = os.getenv('Client_ID',  None)
 client_secret = os.getenv('Client_Secret',  None)
 album_id1 = os.getenv('Album_ID1',  None)
 album_id2 = os.getenv('Album_ID2',  None)
+chatGpt_api_key = os.getenv('chatGpt_api',  None)
 
 if channel_secret is None:
     print('Specify LINE_CHANNEL_SECRET as environment variable.')
@@ -361,6 +363,25 @@ def handle_message(event):
 
     #google_excel = [user_profile.display_name,event.message.text,dt,user_id,user_profile.picture_url]
     #wks.insert_row(google_excel, 2)
+    
+    # 取出文字的前五個字元，轉換成小寫
+    ai_msg = msg[:6].lower()
+    #供chatGpt使用
+    if ai_msg == 'hi ai:':
+        openai.api_key = chatGpt_api_key
+        # 將第六個字元之後的訊息發送給 OpenAI
+        response = openai.Completion.create(
+            model='text-davinci-003',
+            prompt=msg[6:],
+            max_tokens=256,
+            temperature=0.5,
+            )
+        # 接收到回覆訊息後，移除換行符號	
+        content = response["choices"][0]["text"].replace('\n','')
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=content))
+        return 0
 
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
