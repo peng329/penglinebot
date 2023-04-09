@@ -72,10 +72,33 @@ def callback():
     body = request.get_data(as_text=True)
     # print("body:",body)
     app.logger.info("Request body: " + body)
-
+    
+    json_data = json.loads(body)
+    msg = json_data['events'][0]['message']['text']
     # handle webhook body
     try:
         handler.handle(body, signature)
+            # 取出文字的前3個字元，轉換成小寫
+        
+        ai_msg = event.message.text[:3].lower()
+        #供chatGpt使用
+        if ai_msg == 'ai:':
+            openai.api_key = chatGpt_api_key
+            # 將第3個字元之後的訊息發送給 OpenAI
+            response = openai.Completion.create(
+                model='text-davinci-003',
+                prompt=msg[3:],
+                max_tokens=256,
+                temperature=0.5,
+                )
+            # 接收到回覆訊息後，移除換行符號
+            print("response:", response)
+            content = response["choices"][0]["text"].replace('\n','')
+            print("content:", content)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=content))
+        
     except InvalidSignatureError:
         abort(400)
 
@@ -365,32 +388,6 @@ def handle_message(event):
     #google_excel = [user_profile.display_name,event.message.text,dt,user_id,user_profile.picture_url]
     #wks.insert_row(google_excel, 2)
     
-    #chatGpt要用的prompt，格式是要json
-    body = request.get_data(as_text=True)
-    json_data = json.loads(body)
-    msg = json_data['events'][0]['message']['text']
-    print("msg:", msg)
-    # 取出文字的前3個字元，轉換成小寫
-    ai_msg = event.message.text[:3].lower()
-    #供chatGpt使用
-    if ai_msg == 'ai:':
-        openai.api_key = chatGpt_api_key
-        # 將第3個字元之後的訊息發送給 OpenAI
-        response = openai.Completion.create(
-            model='text-davinci-003',
-            prompt=msg[3:],
-            max_tokens=256,
-            temperature=0.5,
-            )
-        # 接收到回覆訊息後，移除換行符號
-        print("response:", response)
-        content = response["choices"][0]["text"].replace('\n','')
-        print("content:", content)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=content))
-        return 0
-
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
         line_bot_api.reply_message(
