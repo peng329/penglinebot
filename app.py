@@ -364,15 +364,15 @@ def handle_message(event):
     #google_excel = [user_profile.display_name,event.message.text,dt,user_id,user_profile.picture_url]
     #wks.insert_row(google_excel, 2)
     
-    # 取出文字的前五個字元，轉換成小寫
-    ai_msg = msg[:6].lower()
+    # 取出文字的前3個字元，轉換成小寫
+    ai_msg = event.message.text[:3].lower()
     #供chatGpt使用
-    if ai_msg == 'hi ai:':
+    if ai_msg == 'ai:':
         openai.api_key = chatGpt_api_key
         # 將第六個字元之後的訊息發送給 OpenAI
         response = openai.Completion.create(
             model='text-davinci-003',
-            prompt=msg[6:],
+            prompt=event.message.text[3:],
             max_tokens=256,
             temperature=0.5,
             )
