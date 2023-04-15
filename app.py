@@ -368,8 +368,7 @@ def handle_message(event):
     
     # 取出文字的前3個字元，轉換成小寫
     ai_msg = event.message.text[:3].lower()
-    
-	openai.api_key = chatGpt_api_key
+    openai.api_key = chatGpt_api_key
 	
     #供chatGpt使用
     if ai_msg == 'ai:':        
