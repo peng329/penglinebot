@@ -385,17 +385,17 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=content))
         return 0
-		
-	if ai_msg == 'img':
-		response = openai.ImageCompletion.create(
-        model="image-alpha-001",
-        prompt=msg[3:],
-        size="256x256"
-		)
-		image_url = response['data'][0]['url']
-		image_message = ImageSendMessage(
-            original_content_url=image_url,
-            preview_image_url=image_url
+
+    if ai_msg == 'img':
+	response = openai.ImageCompletion.create(
+            model="image-alpha-001",
+            prompt=msg[3:],
+            size="256x256"
+	    )
+	image_url = response['data'][0]['url']
+	image_message = ImageSendMessage(
+        original_content_url=image_url,
+        preview_image_url=image_url
         )
         line_bot_api.reply_message(
             event.reply_token, image_message)
