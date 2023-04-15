@@ -387,7 +387,7 @@ def handle_message(event):
         return 0
 
     if ai_msg == 'img':
-	response = openai.ImageCompletion.create(
+	response = openai.Image.create(
             model="image-alpha-001",
             prompt=msg[3:],
             size="256x256"
