@@ -388,9 +388,9 @@ def handle_message(event):
     
     if ai_msg == 'img':        
         response = openai.Image.create(
-            model=="image-alpha-001",
             prompt=msg[3:],
-            size="256x256"
+	    n=1,
+            size="256x256",
             )
         image_url = response['data'][0]['url']
         image_message = ImageSendMessage(
