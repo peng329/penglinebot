@@ -373,16 +373,6 @@ def handle_message(event):
     #供chatGpt使用
     if ai_msg == '111':        
         # 將第3個字元之後的訊息發送給 OpenAI
-	'''text-davinci-003 調用的方法
-        response = openai.Completion.create(
-            model='text-davinci-003',
-            prompt=msg[3:],
-            max_tokens=1024,
-            temperature=0.5,
-            )
-        # 接收到回覆訊息後，移除換行符號
-        content = response["choices"][0]["text"].replace('\n','')
-	'''
 	#改model為gpt-3.5-turbo，api改為openai.ChatCompletion.create
         response = openai.ChatCompletion.create(
             model='gpt-3.5-turbo',
