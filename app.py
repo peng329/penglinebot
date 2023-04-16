@@ -371,8 +371,9 @@ def handle_message(event):
     openai.api_key = chatGpt_api_key
 	
     #供chatGpt使用
-    if ai_msg == 'ai:':        
+    if ai_msg == '111':        
         # 將第3個字元之後的訊息發送給 OpenAI
+	'''text-davinci-003 調用的方法
         response = openai.Completion.create(
             model='text-davinci-003',
             prompt=msg[3:],
@@ -381,12 +382,24 @@ def handle_message(event):
             )
         # 接收到回覆訊息後，移除換行符號
         content = response["choices"][0]["text"].replace('\n','')
+	'''
+	#改model為gpt-3.5-turbo，api改為openai.ChatCompletion.create
+        response = openai.ChatCompletion.create(
+            model='gpt-3.5-turbo',
+            max_tokens=1024,
+            temperature=0.5,
+            messages=[
+                {"role": "user", "content": msg[3:]}
+                ]		
+            )
+        # 接收到回覆訊息後，移除換行符號
+        content = response.choices[0].message.content.replace('\n','')
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
         return 0
     
-    if ai_msg == 'img':        
+    if ai_msg == '222':        
         response = openai.Image.create(
             prompt=msg[3:],
 	    n=1,
