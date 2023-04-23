@@ -641,7 +641,7 @@ def handle_message(event):
 
 
 
-
+'''
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
     print("package_id:", event.message.package_id)
@@ -660,7 +660,7 @@ def handle_sticker_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         sticker_message)
-
+'''
 
 if __name__ == '__main__':
     app.run()
