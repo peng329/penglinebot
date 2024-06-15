@@ -373,9 +373,11 @@ def handle_message(event):
     #供chatGpt使用
     if ai_msg == '111':        
         # 將第3個字元之後的訊息發送給 OpenAI
-	#改model為gpt-3.5-turbo，api改為openai.ChatCompletion.create
+	#api改為openai.ChatCompletion.create
         response = openai.ChatCompletion.create(
-            model='gpt-3.5-turbo',
+
+	    #model從gpt-3.5-turbo，改為gpt-4o
+	    model='gpt-4o',
             max_tokens=1024,
             temperature=0.5,
             messages=[
