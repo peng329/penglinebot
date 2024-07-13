@@ -387,7 +387,7 @@ def handle_message(event):
         # 接收到回覆訊息後，移除換行符號
         #content = response.choices[0].message.content.replace('\n','')
 	#更改換行符號    
-	content = response.choices[0].message.content.replace('\n','\\n')
+	content = response.choices[0].message.content.replace(' ','\n')
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
